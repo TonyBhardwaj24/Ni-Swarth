@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nearby NGOs - Gautam Buddh Nagar</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 90vh; width: 100%; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">📍 Top NGOs Near You (Gautam Buddh Nagar)</h2>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const ngoData = [
+    { name: "Aastha Foundation", lat: 28.5355, lng: 77.3910, services: "Disability Support" },
+    { name: "Navjyoti India Foundation", lat: 28.5537, lng: 77.3862, services: "Education, Women Empowerment" },
+    { name: "Kailash Satyarthi Foundation", lat: 28.4972, lng: 77.5360, services: "Child Rights" },
+    { name: "Aarohan Foundation", lat: 28.6202, lng: 77.4705, services: "Girl Education" },
+    { name: "Sparsh Trust", lat: 28.5671, lng: 77.3224, services: "Healthcare, Autism" }
+  ];
+
+  const map = L.map('map').setView([28.5355, 77.3910], 11); // Default: Noida
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const userIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  // Calculate distance using Haversine formula
+  function getDistance(lat1, lon1, lat2, lon2) {
+    function toRad(x) { return x * Math.PI / 180; }
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  // Get user's current location
+  navigator.geolocation.getCurrentPosition(position => {
+    const userLat = position.coords.latitude;
+    const userLng = position.coords.longitude;
+
+    map.setView([userLat, userLng], 13);
+    L.marker([userLat, userLng], { icon: userIcon }).addTo(map).bindPopup("📍 You are here").openPopup();
+
+    // Sort NGOs by distance from user
+    const sorted = ngoData.map(ngo => {
+      const dist = getDistance(userLat, userLng, ngo.lat, ngo.lng);
+      return { ...ngo, distance: dist };
+    }).sort((a, b) => a.distance - b.distance).slice(0, 5);
+
+    // Show top 5 nearest NGOs with permanent name and popup info
+    sorted.forEach(ngo => {
+      L.marker([ngo.lat, ngo.lng])
+        .addTo(map)
+        .bindTooltip(`<b>${ngo.name}</b>`, { permanent: true, direction: 'top' })
+        .bindPopup(`<b>${ngo.name}</b><br>${ngo.services}<br><i>${ngo.distance.toFixed(2)} km away</i>`);
+    });
+
+  }, () => {
+    alert("Location access denied. Showing default NGOs only.");
+    // If denied, show all NGOs without sorting
+    ngoData.forEach(ngo => {
+      L.marker([ngo.lat, ngo.lng])
+        .addTo(map)
+        .bindTooltip(`<b>${ngo.name}</b>`, { permanent: true, direction: 'top' })
+        .bindPopup(`<b>${ngo.name}</b><br>${ngo.services}`);
+    });
+  });
+</script>
+
+</body>
+</html>

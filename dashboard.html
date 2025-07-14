@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ni-Swarth - Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: slideDown 1s ease-out forwards;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #b45309;
+      transition: transform 0.3s;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #92400e;
+      font-weight: 600;
+      padding: 8px 16px;
+      background-color: #fef9c3;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-links a:hover {
+      background-color: #d1fae5;
+      color: #047857;
+      transform: translateY(-2px);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #ffffff;
+      min-width: 150px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      top: 30px;
+      left: 0;
+      border-radius: 8px;
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      color: #92400e;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #d1fae5;
+      color: #047857;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                  url('https://lh3.googleusercontent.com/proxy/wiI1MQOQ71bRcrLs4XaeB2MRsdMbD8pkQR5AU_YfVyPotK4eTIBUiC3_OUgIxV0m0qN7LMdx');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: #fff;
+    }
+
+    .tagline {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #d1fae5;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #fef9c3;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+
+    .cta-button {
+      background-color: #10b981;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
+    }
+
+    .cta-button:hover {
+      background-color: #047857;
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 80px 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    section.reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: #b45309;
+      margin-bottom: 30px;
+    }
+
+    .section-text {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1rem;
+      color: #5c3c0d;
+    }
+
+    footer {
+      background-color: #fcd34d;
+      padding: 30px 0;
+      text-align: center;
+      color: #78350f;
+      margin-top: 50px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #92400e;
+    }
+
+    .footer-links a:hover {
+      color: #059669;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: #fcd34d;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2000;
+    }
+
+    .loader-circle {
+      border: 6px solid #fde68a;
+      border-top: 6px solid #92400e;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      background: #10b981;
+      color: white;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      display: none;
+      cursor: pointer;
+      z-index: 1001;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    #scrollTopBtn:hover {
+      background: #047857;
+    }
+
+    @keyframes slideDown {
+      0% { transform: translateY(-100%); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Featured Causes */
+    .causes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .cause-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .cause-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .cause-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .cause-card h3 {
+      color: #92400e;
+      margin: 15px 20px 10px;
+    }
+
+    .cause-card p {
+      color: #5c3c0d;
+      margin: 0 20px 15px;
+      font-size: 0.95rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #fef3c7;
+      border-radius: 4px;
+      margin: 0 20px 20px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: #10b981;
+      border-radius: 4px;
+    }
+
+    /* Impact Stats */
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 50px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 20px;
+      min-width: 200px;
+    }
+
+    .number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #b45309;
+      display: block;
+    }
+
+    /* How It Works */
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 250px;
+      text-align: center;
+    }
+
+    .step-icon {
+      width: 60px;
+      height: 60px;
+      background: #fcd34d;
+      color: #78350f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0 auto 20px;
+    }
+
+    .step h3 {
+      color: #92400e;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: #5c3c0d;
+    }
+
+    /* Testimonials */
+    .testimonial-slider {
+      max-width: 800px;
+      margin: 40px auto 0;
+    }
+
+    .testimonial {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin: 20px;
+    }
+
+    .testimonial img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    .testimonial blockquote {
+      font-style: italic;
+      color: #5c3c0d;
+      margin-bottom: 15px;
+    }
+
+    .testimonial cite {
+      font-weight: 600;
+      color: #92400e;
+    }
+
+    /* Activity Feed */
+    .feed {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .activity {
+      display: flex;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+    }
+
+    .activity p {
+      flex: 1;
+      color: #5c3c0d;
+      text-align: left;
+    }
+
+    .activity strong {
+      color: #92400e;
+    }
+
+    .time {
+      font-size: 0.8rem;
+      color: #999;
+    }
+
+    /* User CTA */
+    .cta-cards {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-card {
+      flex: 1;
+      min-width: 300px;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .cta-card h3 {
+      color: #92400e;
+      margin-bottom: 15px;
+    }
+
+    .cta-card p {
+      color: #5c3c0d;
+      margin-bottom: 20px;
+    }
+
+    .donor { background: #d1fae5; }
+    .ngo { background: #fef3c7; }
+
+    /* Blog Posts */
+    .blog-posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .post {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .post:hover {
+      transform: translateY(-5px);
+    }
+
+    .post img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .post-content {
+      padding: 20px;
+    }
+
+    .post h3 {
+      color: #92400e;
+      margin-bottom: 10px;
+    }
+
+    .post p {
+      color: #5c3c0d;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .read-more {
+      color: #10b981;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* Enhanced FAQ Styles */
+    #faq {
+      background-color: #fef9c3;
+      padding: 80px 20px;
+    }
+    
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    
+    .faq-item {
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+    
+    .faq-item:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+    
+    .faq-question {
+      padding: 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #92400e;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fef3c7;
+      transition: background-color 0.3s;
+    }
+    
+    .faq-question:hover {
+      background-color: #fde68a;
+    }
+    
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      transition: transform 0.3s;
+    }
+    
+    .faq-item.active .faq-question::after {
+      content: '-';
+    }
+    
+    .faq-answer {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease;
+      color: #5c3c0d;
+      line-height: 1.6;
+    }
+    
+    .faq-item.active .faq-answer {
+      padding: 20px;
+      max-height: 300px;
+    }
+    
+    .faq-intro {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #78350f;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .faq-cta {
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <div class="loader-circle"></div>
+  </div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Ni-Swarth</div>
+        <ul class="nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="solution.html">Solution</a></li>
+          <li><a href="impact.html">Impact</a></li>
+          <li><a href="team.html">Team</a></li>
+          <li class="dropdown">
+            <a href="#">NGOs</a>
+            <div class="dropdown-content">
+              <a href="Ai Aspects/map.html">Browse NGOs</a>
+              <a href="register-ngo.html">Register NGO</a>
+              <a href="partner.html" target="_blank">Partner With Us</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#">Donor</a>
+            <div class="dropdown-content">
+              <a href="#">Upload an image</a>
+              <a href="#">Monetary Fund</a>
+              <a href="#">Donation History</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="container" style="position: relative; z-index: 1;">
+      <h1>Welcome to Ni-Swarth</h1>
+      <div class="tagline">A PLATFORM FOR CHANGE, A COMMUNITY FOR GROWTH 🌱</div>
+      <p>Empowering communities with AI-driven donations to create meaningful social impact.</p>
+      <a href="#featured" class="cta-button" style="margin-top: 30px;">Explore Causes</a>
+    </div>
+  </section>
+
+  <!-- Featured Causes Section -->
+<section id="featured" class="reveal">
+  <h2 class="section-title">Featured Causes</h2>
+  <div class="causes-grid">
+    <div class="cause-card">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Education NGO">
+      <h3>Education for All</h3>
+      <p>Support underprivileged children with school supplies and uniforms</p>
+      <div class="progress-bar">
+        <div class="progress" style="width: 75%"></div>
+      </div>
+      <a href="#donationForm" class="cta-button">Donate Now</a>
+    </div>
+    <div class="cause-card">
+      <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Hunger Relief">
+      <h3>Hunger Relief</h3>
+      <p>Provide meals to families facing food insecurity</p>
+      <div class="progress-bar">
+        <div class="progress" style="width: 45%"></div>
+      </div>
+      <a href="#donationForm" class="cta-button">Donate Now</a>
+    </div>
+    <div class="cause-card">
+      <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Medical Aid">
+      <h3>Medical Aid</h3>
+      <p>Support healthcare initiatives in rural communities</p>
+      <div class="progress-bar">
+        <div class="progress" style="width: 90%"></div>
+      </div>
+      <a href="#donationForm" class="cta-button">Donate Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- Donation Form Section -->
+<section id="donationForm" style="display: none; padding: 40px; background: #f7f7f7;">
+  <div style="max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #ba5a25;">Donate to a Cause</h2>
+    
+    <!-- Donor Details -->
+    <h4 style="margin-top: 20px;">Donor Information</h4>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <div style="flex: 1 1 48%;">
+        <label>Full Name*</label>
+        <input type="text" name="donor_name" required style="width: 100%; padding: 10px;">
+      </div>
+      <div style="flex: 1 1 48%;">
+        <label>Phone Number*</label>
+        <input type="tel" name="contact" required style="width: 100%; padding: 10px;">
+      </div>
+      <div style="flex: 1 1 100%;">
+        <label>Email*</label>
+        <input type="email" name="email" required style="width: 100%; padding: 10px;">
+      </div>
+    </div>
+
+    <!-- Address Info -->
+    <h4 style="margin-top: 30px;">Address Details</h4>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <div style="flex: 1 1 100%;">
+        <label>Street Address*</label>
+        <input type="text" name="address" required style="width: 100%; padding: 10px;">
+      </div>
+      <div style="flex: 1 1 48%;">
+        <label>City*</label>
+        <input type="text" name="city" required style="width: 100%; padding: 10px;">
+      </div>
+      <div style="flex: 1 1 48%;">
+        <label>State*</label>
+        <input type="text" name="state" required style="width: 100%; padding: 10px;">
+      </div>
+      <div style="flex: 1 1 48%;">
+        <label>Pincode*</label>
+        <input type="text" name="pincode" required style="width: 100%; padding: 10px;">
+      </div>
+    </div>
+
+    <!-- Focus Area -->
+    <h4 style="margin-top: 30px;">Focus Area</h4>
+    <p>Select the area(s) your donation should support:</p>
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+      <label><input type="checkbox" name="focus[]" value="Books"> Books</label>
+      <label><input type="checkbox" name="focus[]" value="Medicine"> Medicine</label>
+      <label><input type="checkbox" name="focus[]" value="Food"> Food</label>
+    </div>
+
+    <!-- Upload -->
+    <div style="margin-top: 20px;">
+      <label>Upload Image (optional)</label><br>
+      <input type="file" name="donation_image" accept="image/*">
+    </div>
+
+    <!-- Submit -->
+    <div style="text-align: center; margin-top: 30px;">
+      <button type="submit" style="padding: 12px 25px; background-color: #ba5a25; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Submit Donation</button>
+    </div>
+  </div>
+</section>
+
+<!-- Smooth Toggle Script -->
+<script>
+  document.querySelectorAll('.cta-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const formSection = document.getElementById('donationForm');
+      formSection.style.display = 'block';
+      window.scrollTo({
+        top: formSection.offsetTop - 40,
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
+
+
+  <!-- Impact Statistics -->
+  <section id="impact-stats" class="reveal" style="background-color: #fef3c7;">
+    <h2 class="section-title">Our Impact</h2>
+    <div class="stats-container">
+      <div class="stat">
+        <span class="number" data-count="2500">0</span>
+        <p>Donations Matched</p>
+      </div>
+      <div class="stat">
+        <span class="number" data-count="150">0</span>
+        <p>Partner NGOs</p>
+      </div>
+      <div class="stat">
+        <span class="number" data-count="10000">0</span>
+        <p>Lives Impacted</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="process" class="reveal">
+    <h2 class="section-title">How Ni-Swarth Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">1</div>
+        <h3>Upload Donation</h3>
+        <p>Take photos of items you want to donate</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">2</div>
+        <h3>AI Matching</h3>
+        <p>Our system finds the perfect NGO match</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">3</div>
+        <h3>Complete Donation</h3>
+        <p>Arrange pickup/drop-off and track impact</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="reveal" style="background-color: #d1fae5;">
+    <h2 class="section-title">Success Stories</h2>
+    <div class="testimonial-slider">
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Happy Donor">
+        <blockquote>"Ni-Swarth made donating so easy! I could see exactly where my old laptop went to help students in need."</blockquote>
+        <cite>- Priya, Donor</cite>
+      </div>
+      <div class="testimonial">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="NGO Representative">
+        <blockquote>"Through Ni-Swarth, we've received exactly what our community needs when we need it most."</blockquote>
+        <cite>- Rajesh, NGO Director</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Activities -->
+  <section id="activity-feed" class="reveal">
+    <h2 class="section-title">Recent Donations</h2>
+    <div class="feed">
+      <div class="activity">
+        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User" class="avatar">
+        <p><strong>Ananya</strong> donated 15 books to <strong>Literacy Foundation</strong></p>
+        <span class="time">2 hours ago</span>
+      </div>
+      <div class="activity">
+        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User" class="avatar">
+        <p><strong>Vikram</strong> donated ₹5,000 to <strong>Hunger Relief Fund</strong></p>
+        <span class="time">5 hours ago</span>
+      </div>
+      <div class="activity">
+        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="User" class="avatar">
+        <p><strong>Meera</strong> donated winter clothes to <strong>Homeless Shelter</strong></p>
+        <span class="time">1 day ago</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- User CTA -->
+  <section id="user-cta" class="reveal">
+    <h2 class="section-title">Get Involved</h2>
+    <div class="cta-cards">
+      <div class="cta-card donor">
+        <h3>I Want to Donate</h3>
+        <p>Give items or funds to verified NGOs</p>
+        <a href="#" class="cta-button">Donate Now</a>
+      </div>
+      <div class="cta-card ngo">
+        <h3>Represent an NGO</h3>
+        <p>Register your organization to receive donations</p>
+        <a href="register-ngo.html" class="cta-button">Register Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section id="blog" class="reveal">
+    <h2 class="section-title">Latest Updates</h2>
+    <div class="blog-posts">
+      <article class="post">
+        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Blog post">
+        <div class="post-content">
+          <h3>How AI is Transforming Donations</h3>
+          <p>Learn how our matching algorithm works to ensure your donations reach those who need them most...</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </article>
+      <article class="post">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Blog post">
+        <div class="post-content">
+          <h3>Success Story: Village Education Project</h3>
+          <p>See how donations through Ni-Swarth helped build a school in rural Maharashtra...</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </article>
+      <article class="post">
+        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Blog post">
+        <div class="post-content">
+          <h3>Upcoming Donation Drives</h3>
+          <p>Join our community initiatives this month to make an even bigger impact...</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Enhanced FAQ Section -->
+  <section id="faq" class="reveal">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="faq-intro">Find answers to common questions about Ni-Swarth, our donation process, and how you can make a difference.</p>
+    
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question">What is Ni-Swarth and how does it work?</div>
+        <div class="faq-answer">
+          <p>Ni-Swarth is an innovative AI-powered donation platform that connects donors with NGOs based on real-time needs. Our system intelligently matches your donations (whether goods or funds) with organizations that need them most, ensuring maximum impact. The platform provides complete transparency, allowing you to track your donation's journey from start to finish.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">How can I donate items through Ni-Swarth?</div>
+        <div class="faq-answer">
+          <p>Donating items is simple:</p>
+          <ol>
+            <li>Upload clear photos of the items you wish to donate</li>
+            <li>Our AI will identify the items and suggest matching NGOs</li>
+            <li>Select your preferred NGO or let our system choose the best match</li>
+            <li>Arrange for pickup or drop-off of your items</li>
+            <li>Track your donation's impact through our platform</li>
+          </ol>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">What types of items can I donate?</div>
+        <div class="faq-answer">
+          <p>We accept a wide range of items including:</p>
+          <ul>
+            <li>Clothing and accessories</li>
+            <li>Books and educational materials</li>
+            <li>Electronics in working condition</li>
+            <li>Furniture and household items</li>
+            <li>Non-perishable food items</li>
+            <li>Medical supplies (unopened and unexpired)</li>
+          </ul>
+          <p>If you're unsure about an item, you can always upload a photo and our system will let you know if it can be accepted.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="faq-cta">
+      <p>Still have questions? We're here to help!</p>
+      <a href="team.html" class="cta-button">Contact Our Support Team</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="contactus.html">Contact</a></li>
+      </ul>
+      <p>© 2025 Ni-Swarth. All rights reserved. 🌍</p>
+    </div>
+  </footer>
+
+  <button id="scrollTopBtn" title="Go to top">↑</button>
+
+  <script>
+    // Loader fade out
+    window.addEventListener('load', () => {
+      document.getElementById('loader').style.display = 'none';
+                              });
+
+    // Scroll reveal animation
+    const sections = document.querySelectorAll('section');
+    function revealOnScroll() {
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          section.classList.add('reveal');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+
+    // Scroll to top
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = function () {
+      revealOnScroll();
+      scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+    };
+    scrollTopBtn.onclick = function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    // Enhanced FAQ functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentNode;
+        item.classList.toggle('active');
+        
+        // Close other open items
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+          if (otherItem !== item && otherItem.classList.contains('active')) {
+            otherItem.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // Animate stats counting
+    function animateCounters() {
+      const counters = document.querySelectorAll('.number');
+      const speed = 200;
+      
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-count');
+        const count = +counter.innerText;
+        const increment = target / speed;
+        
+        if(count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(animateCounters, 1);
+        } else {
+          counter.innerText = target;
+        }
+      });
+    }
+
+    // Run when stats section is visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          animateCounters();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.5});
+
+    observer.observe(document.getElementById('impact-stats'));
+
+    // Simple testimonial slider
+    let currentTestimonial = 0;
+    const testimonials = document.querySelectorAll('.testimonial');
+    
+    function showTestimonial(index) {
+      testimonials.forEach((testimonial, i) => {
+        testimonial.style.display = i === index ? 'block' : 'none';
+      });
+    }
+    
+    // Initialize
+    showTestimonial(0);
+    
+    // Auto-rotate testimonials
+    setInterval(() => {
+      currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+      showTestimonial(currentTestimonial);
+    }, 5000);
+  </script>
+
+  <!-- Jotform Chat Widget -->
+  <script src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js'></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      window.AgentInitializer.init({
+        agentRenderURL: "https://agent.jotform.com/01965e04b84d7defa4a1ca7419325d2466b2",
+        rootId: "JotformAgent-01965e04b84d7defa4a1ca7419325d2466b2",
+        formID: "01965e04b84d7defa4a1ca7419325d2466b2",
+        queryParams: ["skipWelcome=1", "maximizable=1"],
+        domain: "https://www.jotform.com",
+        isDraggable: false,
+        background: "linear-gradient(180deg, #3A5800 0%, #3A5800 100%)",
+        buttonBackgroundColor: "#004BB6",
+        buttonIconColor: "#F8FEEC",
+        variant: false,
+        customizations: {
+          "greeting": "Yes",
+          "greetingMessage": "Hi! How can I assist you?",
+          "openByDefault": "No",
+          "pulse": "Yes",
+          "position": "right",
+          "autoOpenChatIn": "0"
+        },
+        isVoice: false,
+      });
+    });
+  </script>
+</body>
+</html>

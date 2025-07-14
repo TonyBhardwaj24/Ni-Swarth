@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donation Platform - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .active-tab {
+      @apply bg-blue-600 text-white;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Tabs -->
+    <div class="flex justify-center mb-6 space-x-4">
+      <button id="donorTab" class="px-4 py-2 bg-white border rounded shadow hover:bg-gray-200">Donor Dashboard</button>
+      <button id="ngoTab" class="px-4 py-2 bg-white border rounded shadow hover:bg-gray-200">NGO Dashboard</button>
+    </div>
+
+    <!-- Donor Dashboard -->
+    <div id="donorDashboard" class="space-y-6">
+      <h2 class="text-2xl font-bold mb-4 text-blue-800">Welcome, Donor!</h2>
+
+      <!-- Donations Summary -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="text-lg font-semibold">Total Donations</h3>
+          <p class="text-2xl font-bold text-green-600">₹5,000</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="text-lg font-semibold">Focus Areas</h3>
+          <ul class="list-disc list-inside text-gray-700">
+            <li>Books</li>
+            <li>Food</li>
+            <li>Medicine</li>
+          </ul>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="text-lg font-semibold">Upcoming Drives</h3>
+          <p>No upcoming drives</p>
+        </div>
+      </div>
+
+      <!-- Recent Donations Table -->
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">Recent Donations</h3>
+        <table class="w-full table-auto border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-gray-800">
+              <th class="p-2 border">Date</th>
+              <th class="p-2 border">Item</th>
+              <th class="p-2 border">Quantity</th>
+              <th class="p-2 border">NGO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-center">
+              <td class="p-2 border">2025-05-28</td>
+              <td class="p-2 border">Books</td>
+              <td class="p-2 border">20</td>
+              <td class="p-2 border">Helping Hands</td>
+            </tr>
+            <!-- Add more rows here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NGO Dashboard -->
+    <div id="ngoDashboard" class="hidden space-y-6">
+      <h2 class="text-2xl font-bold mb-4 text-green-800">Welcome, NGO!</h2>
+
+      <!-- NGO Summary -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="text-lg font-semibold">Total Donations Received</h3>
+          <p class="text-2xl font-bold text-blue-600">₹7,200</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="text-lg font-semibold">Active Causes</h3>
+          <ul class="list-disc list-inside text-gray-700">
+            <li>Child Education</li>
+            <li>Food Relief</li>
+            <li>Medical Aid</li>
+          </ul>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="text-lg font-semibold">Total Donors</h3>
+          <p class="text-2xl font-bold text-green-600">50+</p>
+        </div>
+      </div>
+
+      <!-- Recent Contributions Table -->
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">Recent Contributions</h3>
+        <table class="w-full table-auto border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-gray-800">
+              <th class="p-2 border">Date</th>
+              <th class="p-2 border">Donor</th>
+              <th class="p-2 border">Item</th>
+              <th class="p-2 border">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-center">
+              <td class="p-2 border">2025-05-28</td>
+              <td class="p-2 border">Elena</td>
+              <td class="p-2 border">Food Packets</td>
+              <td class="p-2 border">30</td>
+            </tr>
+            <!-- Add more rows here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const donorTab = document.getElementById('donorTab');
+    const ngoTab = document.getElementById('ngoTab');
+    const donorDashboard = document.getElementById('donorDashboard');
+    const ngoDashboard = document.getElementById('ngoDashboard');
+
+    donorTab.addEventListener('click', () => {
+      donorDashboard.classList.remove('hidden');
+      ngoDashboard.classList.add('hidden');
+      donorTab.classList.add('active-tab');
+      ngoTab.classList.remove('active-tab');
+    });
+
+    ngoTab.addEventListener('click', () => {
+      ngoDashboard.classList.remove('hidden');
+      donorDashboard.classList.add('hidden');
+      ngoTab.classList.add('active-tab');
+      donorTab.classList.remove('active-tab');
+    });
+  </script>
+</body>
+</html>
